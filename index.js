@@ -106,8 +106,8 @@ fs.readdir(dirPath ,(error, item)=>{
 /*
 Note: INterview question: the folder in which our node js is running is like an webserver environment , it doesnot know about other folders or files outside it so coulnot access them.This quality gives security to our data when we open any site .
 */
- 
- 
+
+
 //VVVVVVVVVVVVi
 //CRUD OPREATIONS WITH  FILE SYSTEM(CREATE , READ ,UPDATE ,DELETE) , WE WILL SEE ALSO :  RENAME FILE
 
@@ -152,7 +152,7 @@ fs.unlinkSync(`${dirPath}/fruit.txt`) //path of file to delete: `${dirPath}/frui
 */
 //interview Q.BUffer: it is a temporary memory which is needed by nodejs while working with file system to do its opreation
 
- 
+
 //Express js :
 
 //TOPIC: Routing with Express js
@@ -169,38 +169,38 @@ const app=express() //invoke express method
  })
  */
 
- // in this we are getting  values in response and acessing it 
- /*
- app.get('',(req, res)=>{
-    console.log("data sent by browser ",req.query) //in request we are giving a object in request so object willbe printed by this line in node js becouse it is a request on node js(server)
-    console.log("data sent by browser ",req.query.name) //request given in URL as:
-    res.send("hello this home page , and request sent by browser = "+req.query.name)
- })
+// in this we are getting  values in response and acessing it 
+/*
+app.get('',(req, res)=>{
+   console.log("data sent by browser ",req.query) //in request we are giving a object in request so object willbe printed by this line in node js becouse it is a request on node js(server)
+   console.log("data sent by browser ",req.query.name) //request given in URL as:
+   res.send("hello this home page , and request sent by browser = "+req.query.name)
+})
 
- ////this create aboutpage at given server(http://localhost:5000/about)
- app.get('/about',(req, res)=>{
-    res.send("hello this ABOUT page ") //this messgae is visible on this page as response
- })
+////this create aboutpage at given server(http://localhost:5000/about)
+app.get('/about',(req, res)=>{
+   res.send("hello this ABOUT page ") //this messgae is visible on this page as response
+})
 
- // HERE WE ARE MAKING SERVER AT GIVEN PORT NO TO LISTEN 
- app.listen(5000)
+// HERE WE ARE MAKING SERVER AT GIVEN PORT NO TO LISTEN 
+app.listen(5000)
 */
- 
- //############################################
 
- //TOPIC: How to display Or render HTML / JSON data on  pages:
+//############################################
 
-  /*
-  Note: JSON data is  important for API and HTML data is importnat for websites
- JSON : means JavaScript Object Notation. EG:
+//TOPIC: How to display Or render HTML / JSON data on  pages:
 
- File: first.json
+/*
+Note: JSON data is  important for API and HTML data is importnat for websites
+JSON : means JavaScript Object Notation. EG:
+
+File: first.json
 {"employees":[  
-    {"name":"Sonoo", "email":"sonoojaiswal1987@gmail.com"},  
-    {"name":"Rahul", "email":"rahul32@gmail.com"},  
-    {"name":"John", "email":"john32bob@gmail.com"}  
+  {"name":"Sonoo", "email":"sonoojaiswal1987@gmail.com"},  
+  {"name":"Rahul", "email":"rahul32@gmail.com"},  
+  {"name":"John", "email":"john32bob@gmail.com"}  
 ]}  
-  */
+*/
 
 // here we have used HTML tags inside body of response page: this is diplaying HTML in page , all code reamins same
 /*
@@ -221,12 +221,12 @@ app.get('/about',(req, res)=>{
  })
  */
 
- /*
- #############################################
- Topic: make html file and acess it in node js 
- reason: if we are making a home page which may conatin 100 line of code so it is not good to render  as above  so use file
+/*
+#############################################
+Topic: make html file and acess it in node js 
+reason: if we are making a home page which may conatin 100 line of code so it is not good to render  as above  so use file
 
- //code:
+//code:
 
 
 
@@ -236,8 +236,8 @@ const path=require('path');
 const app=express();
 const HTMLfolderPath=path.join(__dirname,'HTMLfolder') //here __dirname give path to root folder (i.e NODETUT) and  thsi line join two path to give exact path to HTMLfolder.
 app.use(express.static(HTMLfolderPath)); //static means static files like about.html
-     // now we can access all stataic files inside HTML folder by:
-     //losthost:5000/aboout.html in browser
+    // now we can access all stataic files inside HTML folder by:
+    //losthost:5000/aboout.html in browser
 app.listen(5000)
 
 //interview questions:
@@ -353,3 +353,255 @@ DEFINITION: Middleware are some functions which are applied on routes to access 
  Note: just comment app.use(reqFilter) and apply reqFilter  on specific route as above route "/users".
   we can also midleware in seperate file and export them as we do with acess elements from another file and use them in required routes
  */
+
+
+//############################################
+/*
+  topic: CRUD OPRETAIONS WITH MONGODB
+
+  --> USE DATABASE NAME TO USE DATABASE
+  1. INSERT DATA : USING COMMAND LINE :
+--> db.collection_name.insertOne({OBJECT})// TO INSERT ONE DATA.
+
+  2. CHECK INSERTED DATA USING COMMAND LINE
+   -> db.collection_name..find()
+   3. update data : by command line
+   ->db.collection_name.updateone({name:"shashi"},{$set:{age:25}}) // first parameter is first parametrer of dtaa , 2nd is the value to chnage
+   by directing selecting edit button on given data and modify there .
+  
+  4.DELETE :
+  db.collection_name.deleteOne()
+
+### interview QQQQQQQQQ.
+q1. what is mongoDB?
+ans:it is a NOSQL database.it stores data in form of collections which has no rows and columns. data in collection are in form of ojects(called document)
+   
+q2.MongoD : mongod is a background process used by MongoDB. The main purpose of mongod is to manage all the MongoDB server tasks.
+Q3. MOngos: it is a commend line shell in mongodb compass .
+   */
+
+// how  to connect mongodb with node js : 
+/*code:
+const {MongoClient}=require('mongodb');
+
+ 
+const url="mongodb://localhost//27017"; //path of mongodb 27017 is port no
+const client= new MongoClient(url);
+let databaseName="employee";
+
+async function getData(){
+    const result=await client.connect();  // client.connect(); this gives promise and this may take time to get  connected with mongodb so we make it await
+    let db=result.db(databaseName); 
+    let collection=db.collection("manager"); // here we  can connect to collection managaer of database employee 
+    let response=await collection.find({}).toArray(); //handle promise using await
+    console.log(response) //find({}) : get all data  from given collection  and toArray make in structured( array) form.
+
+}
+getData(); 
+//op:[
+  {
+    _id: new ObjectId("64b3f9b853118c26cdb986b3"),
+    name: 'shashi',
+    rollno: '19BCS064'
+  },
+  {
+    _id: new ObjectId("64b3fa4753118c26cdb986b4"),
+    name: 'ram',
+    location: 'delhi'
+  },
+  {
+    _id: new ObjectId("64b534a427a1d6936d932948"),
+    name: 'dheeraj',
+    age: 20
+  }
+]
+
+*/
+
+//##########################
+/*
+Note:we can connect  with morethan one database  and get data at a time
+*/
+
+//proper way to read data from database:
+/* note : we have copied  this connection code to afilename:mongo 
+
+const {MongoClient}=require('mongodb');
+const url="mongodb://localhost//27017"; //path of mongodb 27017 is port no
+const client= new MongoClient(url);
+let databaseName="employee";
+
+//this function make connection with mongodb.js  and imported in here  so that for different opreation of database(like: insert, delete, update etc,
+// so that we dont need to write connection code  for  every opreation , just import and use where needed )
+
+async function dbConnect(){
+    const result=await client.connect();  // client.connect(); this gives promise and this may take time to get  connected with mongodb so we make it await
+    let db=result.db(databaseName); 
+   return  db.collection("manager"); // here we  can connect to collection managaer of database employee 
+   }
+
+ */
+
+
+//console.log(dbConnect()); // this gives promise pending so, we can handle it using promise OR (async , await)
+// 1.using promise() , .then()
+
+// dbConnect().then((response)=>{
+//     //console.log(response.find().toArray());  // here to array also rrturn promise so here also need to handle it .
+// response.find().toArray().then((data)=>{ 
+// console.log(data)
+//   })
+// })
+
+// NOte: if we want to find some specific data then we can use find({name:"shashi"})  in place of find() in above code , name:"shashi" is a condition
+
+//########### TOPIC : this code is to read database using nodejs using find()
+
+/*
+const dbConnect=require('./db/mongodb')
+//2.using async, await (PREFERE THIS )
+const main=async()=>{
+   let resp=await dbConnect() //this function give promise <pending>
+   let data=await resp.find().toArray(); //toArray give response handle it 
+   console.log(data)
+}
+main(); //then we got op 
+
+*/
+
+
+//########################################################################################
+
+//Mongoose: topic-1. CRUD opreation on mongodb using mongoose 
+
+/*
+const mongoose = require('mongoose');
+
+
+//save opreation
+const saveInDB = async () => {
+
+  // Step 1: Connect to the MongoDB database
+  await mongoose.connect("mongodb://0.0.0.0:27017/employee"); // this connect nodejs with database 
+
+  //step 2: define schema which can be applied to collection
+  let ProductSchema = new mongoose.Schema({
+    name: String,  // we fix that there will be  only one field in collection and it takes value as string
+    roll: Number
+  });
+  //step3 : make model for mongoose  (i.e apply schema for given collection in mongodb   )
+  const ProductModel = mongoose.model('depts', ProductSchema) //this will create collection manager using  ProductSchema
+  let data = new ProductModel({ "name": "shiv", "roll": 64 });  // make object  type modeldata for new data 
+  try {
+    let result = await data.save(); // this may give error so use try catch fot this .
+    console.log("saved data")
+
+  } catch (error) {
+    console.log("error in saving:", error)
+  }
+
+
+}
+//saveInDB()
+
+//NOte: supose we have make schema of two fields and we try to save data of 3 fields then only first two fields will be saved by ignorin 3rd one 
+
+const updateInDB = async () => {
+
+  // Step 1: Connect to the MongoDB database
+  await mongoose.connect("mongodb://0.0.0.0:27017/employee"); // this connect nodejs with database 
+
+  //step 2: define schema which can be applied to collection
+  let ProductSchema = new mongoose.Schema({
+    name: String,  // we fix that there will be  only one field in collection and it takes value as string
+    roll: Number
+  });
+
+  //step3 : make model for mongoose  (i.e apply schema for given collection in mongodb   )
+  const product = mongoose.model("depts", ProductSchema); //here product is like a table
+  try {
+    
+    await product.updateOne(
+      { name: "shiv" }, //matching condition
+      { $set: { roll: 98 } } // to update 
+    )
+    console.log("updated")
+  } catch (error) {
+    console.log("error",error)
+  }
+  
+}
+
+//updateInDB();
+
+//deleteIN DB
+const deleteInDB = async () => {
+
+  // Step 1: Connect to the MongoDB database
+  await mongoose.connect("mongodb://0.0.0.0:27017/employee"); // this connect nodejs with database 
+
+  //step 2: define schema which can be applied to collection
+  let ProductSchema = new mongoose.Schema({
+    name: String,  // we fix that there will be  only one field in collection and it takes value as string
+    roll: Number
+  });
+
+  //step3 : make model for mongoose  (i.e apply schema for given collection in mongodb   )
+  const product = mongoose.model("depts", ProductSchema); //here product is like a table
+  try {
+    
+    await product.deleteOne(
+      { name: "" } //matching condition 
+    )
+    console.log("deleted")
+  } catch (error) {
+    console.log("error",error)
+  }
+  
+}
+//deleteInDB()
+
+//findINDB , just replace deleteOne({condition}) with find({condition }) and other same , it gives allrecords matching the condition
+
+
+*/
+
+
+//Topic-2: PostAPI using mongoose , where  we will implement schema , model etc , which is a project equivalent API
+
+//Note : schema and model are  based on collection so we make configure.js file and collection's  schemas and 
+
+const express = require('express');
+require("./config");
+const Product = require('./product');
+const app = express();
+
+app.use(express.json());
+app.post("/create", async (req, resp) => {
+    let data = new Product(req.body);
+    const result = await data.save();
+    resp.send(result);
+});
+
+app.get("/list", async (req, resp) => {
+    let data = await Product.find();
+    resp.send(data);
+})
+
+app.delete("/delete/:_id", async (req, resp) => {
+    console.log(req.params)
+    let data = await Product.deleteOne(req.params);
+    resp.send(data);
+})
+
+
+app.put("/update/:_id",async (req, resp) => {
+    console.log(req.params)
+    let data = await Product.updateOne(
+        req.params,
+        {$set: req.body}
+    );
+    resp.send(data);
+})
+
+app.listen(5000)
